@@ -1,1 +1,1 @@
-# exercicio0
+# Exercicio não padronizado para teste.
