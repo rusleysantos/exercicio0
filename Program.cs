@@ -13,9 +13,6 @@ using System.Timers;
 
 class MainClass
 {
-    //public static List<Produto> listaProduto { get; set; }
-    //public static List<ItemCompra> itemCompras { get; set; }
-    //public static CarinhoCompra carinhoCompras { get; set; }
 
     public static void Main(string[] args)
     {
