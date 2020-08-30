@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ConsoleApp1.Models
 {
@@ -14,5 +15,28 @@ namespace ConsoleApp1.Models
         public string ValorTotal { get; set; }
 
         public virtual ICollection<ItemCompra> ItemCompra { get; set; }
+
+
+        public static CarinhoCompra operator +(CarinhoCompra carinho1, CarinhoCompra carinho2)
+        {
+            using (Contexto con = new Contexto())
+            {
+                CarinhoCompra carinho3 = new CarinhoCompra();
+                carinho3.ValorTotal = (Convert.ToDouble(carinho1.ValorTotal) + Convert.ToDouble(carinho2.ValorTotal)).ToString();
+
+                con.CarinhoCompra.Add(carinho3);
+                con.SaveChanges();
+
+                var result = con.ItemCompra.Where(x => x.IdCarinhoCompra == carinho1.IdCarinhoCompra || x.IdCarinhoCompra == carinho2.IdCarinhoCompra).ToList();
+
+                foreach (var itemCompra in result)
+                {
+                    itemCompra.IdCarinhoCompra = carinho3.IdCarinhoCompra;
+                }
+                con.SaveChanges();
+
+                return con.CarinhoCompra.Where(x => x.IdCarinhoCompra == carinho3.IdCarinhoCompra).First();
+            }
+        }
     }
 }

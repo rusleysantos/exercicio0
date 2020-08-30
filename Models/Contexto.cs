@@ -1,4 +1,7 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
+using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -21,9 +24,26 @@ namespace ConsoleApp1.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            var caminho = Directory.GetCurrentDirectory().Split("\\");
+            StringBuilder caminhoFinal = new StringBuilder();
+
+            foreach (var trecho in caminho)
+            {
+                if (trecho != "exercicio0")
+                {
+                    caminhoFinal.Append($"{trecho}\\");
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            string cadeiaConexao = $"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={caminhoFinal}exercicio0\\Dados.mdf;Integrated Security=True";
+
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Rusley\\source\\repos\\ConsoleApp1\\ConsoleApp1\\Dados.mdf;Integrated Security=True;");
+                optionsBuilder.UseSqlServer(cadeiaConexao);
             }
         }
 
