@@ -19,6 +19,8 @@ namespace ConsoleApp1.Models
 
         public static CarinhoCompra operator +(CarinhoCompra carinho1, CarinhoCompra carinho2)
         {
+            int idSoma = 0;
+
             using (Contexto con = new Contexto())
             {
                 CarinhoCompra carinho3 = new CarinhoCompra();
@@ -26,14 +28,15 @@ namespace ConsoleApp1.Models
 
                 con.CarinhoCompra.Add(carinho3);
                 con.SaveChanges();
+                idSoma = carinho3.IdCarinhoCompra;
 
                 var result = con.ItemCompra.Where(x => x.IdCarinhoCompra == carinho1.IdCarinhoCompra || x.IdCarinhoCompra == carinho2.IdCarinhoCompra).ToList();
 
                 foreach (var itemCompra in result)
                 {
-                    itemCompra.IdCarinhoCompra = carinho3.IdCarinhoCompra;
+                    itemCompra.IdCarinhoCompra = idSoma;
+                    con.SaveChanges();
                 }
-                con.SaveChanges();
 
                 return con.CarinhoCompra.Where(x => x.IdCarinhoCompra == carinho3.IdCarinhoCompra).First();
             }
