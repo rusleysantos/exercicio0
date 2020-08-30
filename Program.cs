@@ -304,8 +304,10 @@ class MainClass
         {
             var result = con.ItemCompra.Where(x => x.IdCarinhoCompra == idCarinho).ToList();
 
-            // Por se tratar de um banco .mdf precisa ser atualizado após a exclusão.
             con.ItemCompra.RemoveRange(result);
+
+            CarinhoCompra carinho = con.CarinhoCompra.Where(x => x.IdCarinhoCompra == idCarinho).First();
+            carinho.ValorTotal = "";
 
             con.SaveChanges();
         }
@@ -357,8 +359,6 @@ class MainClass
         Console.Clear();
 
         double totalCarinho = 0;
-
-
 
         using (Contexto con = new Contexto())
         {
